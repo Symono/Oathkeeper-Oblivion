@@ -8,10 +8,12 @@ public class Movement : MonoBehaviour
     [SerializeField] float jumpForce = 10f;
 
     Rigidbody2D rb;
-
+    private Animator anim;
+    private bool grounded;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -19,7 +21,7 @@ public class Movement : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         MovePlayer(horizontalInput);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && grounded ) // Check if grounded and not already jumping
         {
             Jump();
         }
@@ -29,15 +31,35 @@ public class Movement : MonoBehaviour
     {
         Vector2 movement = new Vector2(horizontalInput * speed, rb.velocity.y);
         rb.velocity = movement;
-        //flip player left and right
-        if(horizontalInput > 0.01f)
-          transform.localScale = Vector3.one;
+
+        // Flip player left and right
+        if (horizontalInput > 0.01f)
+            transform.localScale = Vector3.one;
         else if (horizontalInput < -0.01f)
-          transform.localScale = new Vector3(-1,1,1);  
+            transform.localScale = new Vector3(-1, 1, 1);
+
+        // Set animator parameters
+        anim.SetBool("Run", horizontalInput != 0);
+        anim.SetBool("Grounded", grounded);
     }
 
     public void Jump()
     {
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        anim.SetTrigger("Jump");
+        grounded = false;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            grounded = true;
+        }
+    }
+    public bool IsGrounded()
+    {
+        return grounded;
+    }
+
 }

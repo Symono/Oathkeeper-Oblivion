@@ -9,10 +9,10 @@ public class PlayerInput : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         movementScript.MovePlayer(horizontalInput);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        // Only allow jumping if the player is grounded
+        if (Input.GetKeyDown(KeyCode.Space) && movementScript.IsGrounded())
         {
             movementScript.Jump();
         }
     }
 }
-
