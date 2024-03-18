@@ -21,7 +21,7 @@ public class Movement : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         MovePlayer(horizontalInput);
 
-        if (Input.GetKeyDown(KeyCode.Space) && grounded ) // Check if grounded and not already jumping
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && grounded ) // Check if grounded and not already jumping
         {
             Jump();
         }
@@ -29,6 +29,11 @@ public class Movement : MonoBehaviour
 
     public void MovePlayer(float horizontalInput)
     {
+        
+        // Add a deadzone to prevent abrupt stopping
+        if (Mathf.Abs(horizontalInput) < 0.01f)
+            horizontalInput = 0f;
+            
         Vector2 movement = new Vector2(horizontalInput * speed, rb.velocity.y);
         rb.velocity = movement;
 
