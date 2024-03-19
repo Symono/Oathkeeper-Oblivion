@@ -67,7 +67,6 @@ public class Movement : MonoBehaviour
             Debug.Log("Collided with an enemy");
             // load into battle scene
             SceneManager.LoadScene("BattleScene");
-            
         }
     }
 
