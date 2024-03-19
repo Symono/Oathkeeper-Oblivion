@@ -1,20 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] float speed = 5f;
+    [SerializeField] float speed = 10f;
     [SerializeField] float jumpForce = 10f;
 
     Rigidbody2D rb;
     private Animator anim;
-    private bool grounded;
-    public GameObject battleCanvas;
-    public Vector3 playerStartPosition; // Specific position for the player
-    public Vector3 enemyStartPosition; // Specific position for the enemy
-
-    private bool canMove = true; // Flag to control player movement
+    private bool grounded;    
 
     void Start()
     {
@@ -24,15 +20,11 @@ public class Movement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (canMove) // Check if the player can move
+        float horizontalInput = Input.GetAxis("Horizontal");
+        MovePlayer(horizontalInput);
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && grounded) // Check if grounded and not already jumping
         {
-            float horizontalInput = Input.GetAxis("Horizontal");
-            MovePlayer(horizontalInput);
-
-            if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && grounded) // Check if grounded and not already jumping
-            {
-                Jump();
-            }
+            Jump();
         }
     }
 
@@ -69,23 +61,13 @@ public class Movement : MonoBehaviour
         {
             grounded = true;
         }
-        // Battle Activation code
+        // Battle Activation 
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Debug.Log("Collided with an enemy");
-            // Show the battle scene canvas
-            battleCanvas.SetActive(true);
-
-            if (BattleManager.instance != null)
-            {
-                // Pause player movement
-                canMove = false;
-                BattleManager.instance.StartBattle(collision.gameObject, playerStartPosition, enemyStartPosition);
-            }
-            else
-            {
-                Debug.LogWarning("BattleManager instance is null!");
-            }
+            // load into battle scene
+            SceneManager.LoadScene("BattleScene");
+            
         }
     }
 
@@ -94,9 +76,4 @@ public class Movement : MonoBehaviour
         return grounded;
     }
 
-    // Method to resume player movement
-    public void ResumeMovement()
-    {
-        canMove = true;
-    }
 }

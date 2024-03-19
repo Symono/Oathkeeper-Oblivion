@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
+
 
 public class BattleManager : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class BattleManager : MonoBehaviour
     public Transform playerStartPosition; // The position where the player should start in the battle scene
 
     public static BattleManager instance;
+    
 
     private void Awake()
     {
@@ -23,7 +26,6 @@ public class BattleManager : MonoBehaviour
     {
         //
         Debug.Log("Battle Started");
-        
         // Access the player GameObject from the Movement script
         GameObject player = FindObjectOfType<Movement>().gameObject;
         
