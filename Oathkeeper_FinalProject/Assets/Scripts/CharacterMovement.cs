@@ -10,6 +10,12 @@ public class Movement : MonoBehaviour
     Rigidbody2D rb;
     private Animator anim;
     private bool grounded;
+    public GameObject battleCanvas;
+    public Vector3 playerStartPosition; // Specific position for the player
+    public Vector3 enemyStartPosition; // Specific position for the enemy
+
+    private bool canMove = true; // Flag to control player movement
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -18,22 +24,24 @@ public class Movement : MonoBehaviour
 
     void FixedUpdate()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        MovePlayer(horizontalInput);
-
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && grounded ) // Check if grounded and not already jumping
+        if (canMove) // Check if the player can move
         {
-            Jump();
+            float horizontalInput = Input.GetAxis("Horizontal");
+            MovePlayer(horizontalInput);
+
+            if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && grounded) // Check if grounded and not already jumping
+            {
+                Jump();
+            }
         }
     }
 
     public void MovePlayer(float horizontalInput)
     {
-        
         // Add a deadzone to prevent abrupt stopping
         if (Mathf.Abs(horizontalInput) < 0.01f)
             horizontalInput = 0f;
-            
+
         Vector2 movement = new Vector2(horizontalInput * speed, rb.velocity.y);
         rb.velocity = movement;
 
@@ -61,10 +69,34 @@ public class Movement : MonoBehaviour
         {
             grounded = true;
         }
+        // Battle Activation code
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("Collided with an enemy");
+            // Show the battle scene canvas
+            battleCanvas.SetActive(true);
+
+            if (BattleManager.instance != null)
+            {
+                // Pause player movement
+                canMove = false;
+                BattleManager.instance.StartBattle(collision.gameObject, playerStartPosition, enemyStartPosition);
+            }
+            else
+            {
+                Debug.LogWarning("BattleManager instance is null!");
+            }
+        }
     }
+
     public bool IsGrounded()
     {
         return grounded;
     }
 
+    // Method to resume player movement
+    public void ResumeMovement()
+    {
+        canMove = true;
+    }
 }
