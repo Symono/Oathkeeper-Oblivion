@@ -133,4 +133,4 @@ MonoBehaviour:
   unitLevel: 2
   damage: 5
   maxHP: 30
-  currentHp: 30
+  currentHP: 30
