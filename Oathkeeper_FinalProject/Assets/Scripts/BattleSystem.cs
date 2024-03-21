@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public enum BattleState {START, PLAYERTURN, ENEMYTURN, WON, LOST}
 
@@ -15,10 +16,13 @@ public class BattleSystem : MonoBehaviour
     Unit playerUnit;
     Unit enemyUnit;
     public TextMeshProUGUI dialogueText;
-    public BattleHUD playerHUD;
+    public PlayerHUD playerHUD;
     public BattleHUD enemyHUD;
 
     public BattleState state;
+
+    public GameObject magicButton;
+    public GameObject magicCanvas;
 
 
     // Start is called before the first frame update
@@ -90,6 +94,50 @@ public class BattleSystem : MonoBehaviour
             return;
         StartCoroutine(PlayerAttack());
     }
+    public void OnMagicButton()
+    {
+        if (state !=BattleState.PLAYERTURN)
+            return;
+    }
+    public void OnHealButton()
+    {
+        if (state !=BattleState.PLAYERTURN)
+            return;
+        StartCoroutine(PlayerHeal());
+
+    }
+    IEnumerator PlayerHeal()
+    {
+        
+        if(playerUnit.currentMana <= 0){
+            dialogueText.text = "You are out of Mana please use regular Attack or an Item!";
+            //go back
+            // Deactivate the magic canvas
+            magicCanvas.SetActive(false);
+            // Reactivate the regular action buttons
+            magicButton.SetActive(true);
+        }
+        else
+        {
+            // Heal the player
+            playerUnit.Heal(10,15);
+
+            // Update player's health bar UI
+            playerHUD.UpdateHealthBar(playerUnit.currentHP, playerUnit.maxHP);
+            playerHUD.UpdateManaBar(playerUnit.currentMana,playerUnit.maxMana);
+        
+            // Display some feedback
+            dialogueText.text = "You have been healed!";
+            yield return new WaitForSeconds(2f);
+
+            // End player's turn
+            state = BattleState.ENEMYTURN;
+            // Proceed to enemy's turn
+            StartCoroutine(EnemyTurn());
+        }
+       
+    }
+
     IEnumerator EnemyTurn()
 	{
 		dialogueText.text = enemyUnit.unitName + " attacks!";
