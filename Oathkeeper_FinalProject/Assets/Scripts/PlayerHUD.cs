@@ -12,10 +12,10 @@ public class PlayerHUD : MonoBehaviour
     public Image healthBarFill;
     public Image manaBarFill;
 
-   public void SetHUD(Unit unit)
+   public void SetHUD(PlayerData unit)
     {
-        nameText.text = unit.unitName;
-        levelText.text = "Lvl " + unit.unitLevel;
+        nameText.text = unit.playerName;
+        levelText.text = "Lvl " + unit.level;
         UpdateHealthBar(unit.currentHP, unit.maxHP);
         UpdateManaBar(unit.currentMana, unit.maxMana);
 

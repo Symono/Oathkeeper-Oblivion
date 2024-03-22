@@ -12,6 +12,9 @@ public class Movement : MonoBehaviour
     private Animator anim;
     private bool grounded;    
 
+    private GameObject collidedEnemy;
+    public PlayerData playerData;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -65,8 +68,18 @@ public class Movement : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Debug.Log("Collided with an enemy");
-            // load into battle scene
+            EnemyPatrol enemyPatrol = collision.gameObject.GetComponent<EnemyPatrol>();           
+            // Access the EnemyData from the EnemyPatrol component
+            EnemyData enemyData = enemyPatrol.enemyData;
+            
+            // Save player and enemy data to PlayerPrefs for access in the battle scene
+            PlayerPrefs.SetString("PlayerData", JsonUtility.ToJson(playerData));
+            PlayerPrefs.SetString("EnemyData", JsonUtility.ToJson(enemyData));
+        
+             // Load the battle scene
             SceneManager.LoadScene("BattleScene");
+            // Start battle with the retrieved player and enemy data
+            //SceneManager.LoadScene("BattleScene");
         }
     }
 
@@ -75,4 +88,8 @@ public class Movement : MonoBehaviour
         return grounded;
     }
 
+    public GameObject GetCollidedEnemy()
+    {
+        return collidedEnemy;
+    }
 }

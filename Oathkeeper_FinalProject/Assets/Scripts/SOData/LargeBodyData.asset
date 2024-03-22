@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bf21bf11114ad346858cc3b88c8df9e, type: 3}
+  m_Name: LargeBodyData
+  m_EditorClassIdentifier: 
+  EnemyName: Large Body Heartless
+  level: 1
+  currentHP: 25
+  maxHP: 25
+  basicHitDamage: 5
+  healAmount: 5
+  character: {fileID: 9034150966606301717, guid: cd83591100b41da43925a1bcec849e00, type: 3}

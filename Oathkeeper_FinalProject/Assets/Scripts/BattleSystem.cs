@@ -1,20 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
-using Unity.VisualScripting;
+using System;
+using UnityEngine.SceneManagement;
 
-public enum BattleState {START, PLAYERTURN, ENEMYTURN, WON, LOST}
+public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 
 public class BattleSystem : MonoBehaviour
 {
-    public GameObject playerPrefab;
-    public GameObject enemyPrefab;
     public Transform playerBattleStation;
     public Transform enemyBattleStation;
-    Unit playerUnit;
-    Unit enemyUnit;
     public TextMeshProUGUI dialogueText;
     public PlayerHUD playerHUD;
     public BattleHUD enemyHUD;
@@ -24,26 +19,70 @@ public class BattleSystem : MonoBehaviour
     public GameObject magicButton;
     public GameObject magicCanvas;
 
+    public static BattleSystem instance;
 
-    // Start is called before the first frame update
+    public PlayerData playerUnit;
+    public EnemyData enemyUnit;
+
+    private PlayerData playerData;
+    private EnemyData enemyData;
+    public EnemyPatrol enemyPatrol; // Reference to the EnemyPatrol script
+
+
     void Start()
-    {
-        state = BattleState.START;
-        StartCoroutine(SetupBattle());
+{
+    string playerDataJson = PlayerPrefs.GetString("PlayerData");
+    string enemyDataJson = PlayerPrefs.GetString("EnemyData");
+    Debug.Log("PlayerData JSON: " + playerDataJson);
+    Debug.Log("EnemyData JSON: " + enemyDataJson);
 
+    // Instantiate playerData and enemyData if they are null
+    if (playerData == null)
+        playerData = ScriptableObject.CreateInstance<PlayerData>();
+    if (enemyData == null)
+        enemyData = ScriptableObject.CreateInstance<EnemyData>();
+
+    // Deserialize playerDataJson into playerData object
+    JsonUtility.FromJsonOverwrite(playerDataJson, playerData);
+    // Deserialize enemyDataJson into enemyData object
+    JsonUtility.FromJsonOverwrite(enemyDataJson, enemyData);
+    
+    StartBattle(playerData,enemyData);
+}
+
+
+
+    public void StartBattle(PlayerData player, EnemyData enemy)
+    {
+        if (player == null)
+        {
+            Debug.Log("Player not found!");
+            return;
+        }
+        if (enemy == null)
+        {
+            Debug.Log("Enemy not found!");
+            return;
+        }
+
+        playerUnit = player;
+        enemyUnit = enemy;
+
+        StartCoroutine(SetupBattle(player, enemy));
     }
-    IEnumerator SetupBattle()
+
+    IEnumerator SetupBattle(PlayerData player, EnemyData enemy)
     {
-        GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
-		playerUnit = playerGO.GetComponent<Unit>();
+         GameObject playerCharacter = Instantiate(player.character, playerBattleStation.position, Quaternion.identity);
+        playerCharacter.transform.SetParent(playerBattleStation);
 
-		GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
-		enemyUnit = enemyGO.GetComponent<Unit>();
+        GameObject enemyCharacter = Instantiate(enemy.character, enemyBattleStation.position, Quaternion.identity);
+        enemyCharacter.transform.SetParent(enemyBattleStation);
+            
+        dialogueText.text = "A Battle has started with " + enemy.EnemyName;
 
-        dialogueText.text = "A Battle has started with " + enemyUnit.unitName;
-
-        playerHUD.SetHUD(playerUnit);
-        enemyHUD.SetHUD(enemyUnit);
+        playerHUD.SetHUD(player);
+        enemyHUD.SetHUD(enemy);
 
         yield return new WaitForSeconds(2f);
 
@@ -51,115 +90,109 @@ public class BattleSystem : MonoBehaviour
         PlayerTurn();
     }
 
-    IEnumerator PlayerAttack()
+    IEnumerator PlayerAttack(PlayerData player, EnemyData enemy)
     {
-        //Damage the enemy
-        bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
-        enemyHUD.UpdateHealthBar(enemyUnit.currentHP,enemyUnit.maxHP);
+        bool isDead = enemy.TakeDamage(player.basicHitDamage);
+        enemyHUD.UpdateHealthBar(enemy.currentHP, enemy.maxHP);
         dialogueText.text = "The attack was successful";
-        
+
         yield return new WaitForSeconds(2f);
-        //check if the enemy is dead
-        if(isDead)
+
+        if (isDead)
         {
             state = BattleState.WON;
             EndBattle();
-            
-        }else
+        }
+        else
         {
             state = BattleState.ENEMYTURN;
-            StartCoroutine(EnemyTurn());
+            StartCoroutine(EnemyTurn(player, enemy));
         }
-        
-        //change state based on what happened
     }
 
-    void EndBattle(){
-        if(state == BattleState.WON)
+    void EndBattle()
+    {
+        if (state == BattleState.WON)
         {
-            dialogueText.text= "You WIN";
+            dialogueText.text = "You WIN";
         }
-        else{
+        else
+        {
             dialogueText.text = "You LOSE";
         }
     }
+
     void PlayerTurn()
     {
         dialogueText.text = "Choose an action:";
-
     }
+
     public void OnAttackButton()
     {
         if (state != BattleState.PLAYERTURN)
             return;
-        StartCoroutine(PlayerAttack());
+        StartCoroutine(PlayerAttack(playerUnit, enemyUnit));
     }
+
     public void OnMagicButton()
     {
-        if (state !=BattleState.PLAYERTURN)
+        if (state != BattleState.PLAYERTURN)
             return;
+
+        // Implement magic button functionality
     }
+
     public void OnHealButton()
     {
-        if (state !=BattleState.PLAYERTURN)
+        if (state != BattleState.PLAYERTURN)
             return;
-        StartCoroutine(PlayerHeal());
 
+        StartCoroutine(PlayerHeal(playerUnit, enemyUnit));
     }
-    IEnumerator PlayerHeal()
+
+    IEnumerator PlayerHeal(PlayerData player, EnemyData enemy)
     {
-        
-        if(playerUnit.currentMana <= 0){
-            dialogueText.text = "You are out of Mana please use regular Attack or an Item!";
-            //go back
-            // Deactivate the magic canvas
+        if (player.currentMana <= 0)
+        {
+            dialogueText.text = "You are out of Mana. Please use regular Attack or an Item!";
             magicCanvas.SetActive(false);
-            // Reactivate the regular action buttons
             magicButton.SetActive(true);
         }
         else
         {
-            // Heal the player
-            playerUnit.Heal(10,15);
+            player.Heal(player.healAmount,10);
+            playerHUD.UpdateHealthBar(player.currentHP, player.maxHP);
+            playerHUD.UpdateManaBar(player.currentMana, player.maxMana);
 
-            // Update player's health bar UI
-            playerHUD.UpdateHealthBar(playerUnit.currentHP, playerUnit.maxHP);
-            playerHUD.UpdateManaBar(playerUnit.currentMana,playerUnit.maxMana);
-        
-            // Display some feedback
             dialogueText.text = "You have been healed!";
             yield return new WaitForSeconds(2f);
 
-            // End player's turn
             state = BattleState.ENEMYTURN;
-            // Proceed to enemy's turn
-            StartCoroutine(EnemyTurn());
+            StartCoroutine(EnemyTurn(player, enemy));
         }
-       
     }
 
-    IEnumerator EnemyTurn()
-	{
-		dialogueText.text = enemyUnit.unitName + " attacks!";
+    IEnumerator EnemyTurn(PlayerData player, EnemyData enemy)
+    {
+        dialogueText.text = enemy.EnemyName + " attacks!";
 
-		yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f);
 
-		bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
+        bool isDead = player.TakeDamage(enemy.basicHitDamage);
 
-		playerHUD.UpdateHealthBar(playerUnit.currentHP,playerUnit.maxHP);
+        playerHUD.UpdateHealthBar(player.currentHP, player.maxHP);
 
-		yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f);
 
-		if(isDead)
-		{
-			state = BattleState.LOST;
-			EndBattle();
-		} else
-		{
-			state = BattleState.PLAYERTURN;
-			PlayerTurn();
-		}
-
-	}
-    
+        if (isDead)
+        {
+            state = BattleState.LOST;
+            EndBattle();
+        }
+        else
+        {
+            state = BattleState.PLAYERTURN;
+            PlayerTurn();
+        }
+    }
 }

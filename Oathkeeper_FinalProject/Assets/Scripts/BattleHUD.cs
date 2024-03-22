@@ -10,10 +10,10 @@ public class BattleHUD : MonoBehaviour
     public TextMeshProUGUI levelText;
 
     public Image healthBarFill;
-   public void SetHUD(Unit unit)
+   public void SetHUD(EnemyData unit)
     {
-        nameText.text = unit.unitName;
-        levelText.text = "Lvl " + unit.unitLevel;
+        nameText.text = unit.EnemyName;
+        levelText.text = "Lvl " + unit.level;
         UpdateHealthBar(unit.currentHP, unit.maxHP);
 
     }

@@ -448,8 +448,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47eccbb58f99774469763401d6f76504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1722202275506995558, guid: 712af2275f5a13c408f4de087e893c34, type: 3}
-  enemyPrefab: {fileID: 3164965823386646141, guid: a077544302f6fe149be5ccda322f9301, type: 3}
   playerBattleStation: {fileID: 678895115}
   enemyBattleStation: {fileID: 1125803924}
   dialogueText: {fileID: 1925263655}
@@ -458,6 +456,8 @@ MonoBehaviour:
   state: 0
   magicButton: {fileID: 1400572433}
   magicCanvas: {fileID: 1612922619}
+  playerUnit: {fileID: 11400000, guid: 20083bb2a5240964b953731880925802, type: 2}
+  enemyUnit: {fileID: 11400000, guid: d3223c10bd2d41a41ad55247de97ae22, type: 2}
 --- !u!4 &441375030
 Transform:
   m_ObjectHideFlags: 0
