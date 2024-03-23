@@ -10,9 +10,11 @@ public class EnemyPatrol : MonoBehaviour
     public float range = 3;
     float startingX;
     int dir = 1;
-    public bool canMove; // Flag to control enemy movement
+
+    private bool Grounded;
 
     public EnemyData enemyData;
+
 
 
 
@@ -20,14 +22,17 @@ public class EnemyPatrol : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        anim.SetBool("isRunning", true);
+        anim.SetBool("isRunning", false);
+        FlipSprite();
         startingX = transform.position.x;
     }
 
     void FixedUpdate()
-{
-    if (canMove)
     {
+
+    if (Grounded )
+    {
+        anim.SetBool("isRunning", true);
         transform.Translate(Vector2.right * speed * Time.deltaTime * dir);
         if (transform.position.x < startingX || transform.position.x > startingX + range)
         {
@@ -45,18 +50,14 @@ public class EnemyPatrol : MonoBehaviour
 {
     if (collision.gameObject.CompareTag("Ground"))
     {
-        canMove = true; // Only allow movement if collided with an object tagged "Ground"
+        Grounded = true; // Only allow movement if collided with an object tagged "Ground"
     }
     else
     {
-        canMove = false; // Disable movement if collided with anything other than "Ground"
+        Grounded = false; // Disable movement if collided with anything other than "Ground"
     }
 }
 
-    void OnDisable()
-    {
-        PauseMovement(); // Call PauseMovement when the script is disabled
-    }
    public void FlipSprite()
    {
     // Switch the direction the enemy is facing
@@ -66,15 +67,10 @@ public class EnemyPatrol : MonoBehaviour
    }
    public void PauseMovement()
     {
-        canMove = false; // Disable enemy movement
         anim.SetBool("isRunning", false);
         rb.velocity = Vector2.zero; // Stop the enemy's velocity
 
     }
 
-    public void ResumeMovement()
-    {
-        canMove = true; // Enable enemy movement
-    }
 
 }
