@@ -27,7 +27,7 @@ public class EnemyBattleManager : MonoBehaviour
     {
         if (battleManager.state == BattleState.WON)
         {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
     }
 }

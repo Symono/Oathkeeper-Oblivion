@@ -63,7 +63,10 @@ public class Movement : MonoBehaviour
             grounded = true;
         }
         if ( collision.gameObject.CompareTag("DeadZone")){
-            SceneManager.LoadScene("MainMenu");
+            SceneManager.LoadScene("Main Menu");
+        }
+        if (collision.gameObject.CompareTag("Finish")){
+            SceneManager.LoadScene("Main Menu");
         }
         
     }
