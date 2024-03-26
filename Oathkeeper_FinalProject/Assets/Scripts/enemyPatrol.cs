@@ -16,8 +16,6 @@ public class EnemyPatrol : MonoBehaviour
     public EnemyData enemyData;
 
 
-
-
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();

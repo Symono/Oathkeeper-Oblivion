@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bf21bf11114ad346858cc3b88c8df9e, type: 3}
   m_Name: LargeBodyData
   m_EditorClassIdentifier: 
-  EnemyName: Large Body Heartless
+  EnemyName: LB Heartless
   level: 1
+  exp: 50
   currentHP: 25
   maxHP: 25
   basicHitDamage: 5

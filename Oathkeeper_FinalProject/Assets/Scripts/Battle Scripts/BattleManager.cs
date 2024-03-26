@@ -1,15 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System;
-using UnityEngine.SceneManagement;
 
-public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
-
-public class BattleSystem : MonoBehaviour
+public class BattleManager : MonoBehaviour
 {
-    public Transform playerBattleStation;
-    public Transform enemyBattleStation;
     public TextMeshProUGUI dialogueText;
     public PlayerHUD playerHUD;
     public BattleHUD enemyHUD;
@@ -19,47 +14,26 @@ public class BattleSystem : MonoBehaviour
     public GameObject magicButton;
     public GameObject magicCanvas;
 
-    public static BattleSystem instance;
+    public PlayerData player;
+    public EnemyData enemy;
 
-    public PlayerData playerUnit;
-    public EnemyData enemyUnit;
+    public Movement characterMovement;
 
-    private PlayerData playerData;
-    private EnemyData enemyData;
-    public gameManager gameManager;
+    public GameObject BattleCanvas;
 
+    public GameObject winCanvas;
+    public TextMeshProUGUI ExperienceText;
+    public TextMeshProUGUI LevelText;
 
-
-    void Start()
-{
-    gameManager = FindObjectOfType<gameManager>();
     
-    StartBattle(playerData, enemyData);
-}
-
-    public void StartBattle(PlayerData player, EnemyData enemy)
+    
+    public void StartBattle()
     {
-        if (player == null)
-        {
-            Debug.Log("Player not found!");
-            return;
-        }
-        if (enemy == null)
-        {
-            Debug.Log("Enemy not found!");
-            return;
-        }
-
-        StartCoroutine(SetupBattle(player, enemy));
+        StartCoroutine(SetupBattle());
     }
 
-    IEnumerator SetupBattle(PlayerData player, EnemyData enemy)
+    IEnumerator SetupBattle()
     {
-         GameObject playerCharacter = Instantiate(player.character, playerBattleStation.position, Quaternion.identity);
-        playerCharacter.transform.SetParent(playerBattleStation);
-
-        GameObject enemyCharacter = Instantiate(enemy.character, enemyBattleStation.position, Quaternion.identity);
-        enemyCharacter.transform.SetParent(enemyBattleStation);
             
         dialogueText.text = "A Battle has started with " + enemy.EnemyName;
 
@@ -72,7 +46,7 @@ public class BattleSystem : MonoBehaviour
         PlayerTurn();
     }
 
-    IEnumerator PlayerAttack(PlayerData player, EnemyData enemy)
+    IEnumerator PlayerAttack()
     {
         bool isDead = enemy.TakeDamage(player.basicHitDamage);
         enemyHUD.UpdateHealthBar(enemy.currentHP, enemy.maxHP);
@@ -88,7 +62,7 @@ public class BattleSystem : MonoBehaviour
         else
         {
             state = BattleState.ENEMYTURN;
-            StartCoroutine(EnemyTurn(player, enemy));
+            StartCoroutine(EnemyTurn());
         }
     }
 
@@ -99,12 +73,26 @@ public class BattleSystem : MonoBehaviour
         if (state == BattleState.WON)
         {
             dialogueText.text = "You WIN";
-            gameManager.EndBattleAndTransitionScene();
+            
+            BattleCanvas.SetActive(false);
+
+            winCanvas.SetActive(true);
+            
+            characterMovement.enabled = true;
+
+            player.GainXP(enemy.exp);
+
+            ExperienceText.text = "You have gained " + enemy.exp +" experience points! ";
+
+            LevelText.text = "Your current Level is " + player.level + " your current exp is " + player.experiencePoints;
+                        
+
 
         }
         else
         {
             dialogueText.text = "You LOSE";
+            
         }
     }
 
@@ -117,15 +105,13 @@ public class BattleSystem : MonoBehaviour
     {
         if (state != BattleState.PLAYERTURN)
             return;
-        StartCoroutine(PlayerAttack(playerUnit, enemyUnit));
+        StartCoroutine(PlayerAttack());
     }
 
     public void OnMagicButton()
     {
         if (state != BattleState.PLAYERTURN)
             return;
-
-        // Implement magic button functionality
     }
 
     public void OnHealButton()
@@ -133,10 +119,10 @@ public class BattleSystem : MonoBehaviour
         if (state != BattleState.PLAYERTURN)
             return;
 
-        StartCoroutine(PlayerHeal(playerUnit, enemyUnit));
+        StartCoroutine(PlayerHeal());
     }
 
-    IEnumerator PlayerHeal(PlayerData player, EnemyData enemy)
+    IEnumerator PlayerHeal()
     {
         if (player.currentMana <= 0)
         {
@@ -154,11 +140,11 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(2f);
 
             state = BattleState.ENEMYTURN;
-            StartCoroutine(EnemyTurn(player, enemy));
+            StartCoroutine(EnemyTurn());
         }
     }
 
-    IEnumerator EnemyTurn(PlayerData player, EnemyData enemy)
+    IEnumerator EnemyTurn()
     {
         dialogueText.text = enemy.EnemyName + " attacks!";
 
@@ -182,3 +168,4 @@ public class BattleSystem : MonoBehaviour
         }
     }
 }
+

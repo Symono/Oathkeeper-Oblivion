@@ -8,6 +8,7 @@ public class PlayerData : ScriptableObject
     [SerializeField]
     public string playerName;
     public int level;
+    public int experiencePoints;
     public int currentHP;
     public int maxHP;
     public int currentMana;
@@ -21,6 +22,7 @@ public class PlayerData : ScriptableObject
     {
         playerName = "DefaultName";
         level = 1;
+        experiencePoints = 0;
         currentHP = 100;
         maxHP = 100;
         currentMana = 50;
@@ -46,4 +48,25 @@ public class PlayerData : ScriptableObject
             currentHP = maxHP;
         currentMana -= cost;
     }
+    public void GainXP(int pointsEarned)
+{
+    experiencePoints += pointsEarned;
+    int levelThreshold = 100; 
+    int levelsGained = experiencePoints / levelThreshold;
+
+    if (levelsGained > 0)
+    {
+        // Increase the player's level
+        level += levelsGained;
+
+        // Increase the player's max health and max mana 
+        maxHP += 10 * levelsGained; // Increase maxHP by 10 for each level gained
+        maxMana += 5 * levelsGained; // Increase maxMana by 5 for each level gained 
+
+        experiencePoints -= levelsGained * levelThreshold;
+    }
+    
+}
+
+
 }

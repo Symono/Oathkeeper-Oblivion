@@ -11,8 +11,7 @@ public class Movement : MonoBehaviour
     Rigidbody2D rb;
     private Animator anim;
     private bool grounded;    
-
-    private GameObject collidedEnemy;
+    public bool canMove;
     public PlayerData playerData;
 
     void Start()
@@ -23,20 +22,19 @@ public class Movement : MonoBehaviour
 
     void FixedUpdate()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        MovePlayer(horizontalInput);
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && grounded) // Check if grounded and not already jumping
+        if (canMove) // Proceed with movement only if not in battle
         {
-            Jump();
+            float horizontalInput = Input.GetAxis("Horizontal");
+            MovePlayer(horizontalInput);
+            if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) && grounded) // Check if grounded and not already jumping
+            {
+                Jump();
+            }
         }
     }
 
     public void MovePlayer(float horizontalInput)
     {
-        // Add a deadzone to prevent abrupt stopping
-        if (Mathf.Abs(horizontalInput) < 0.01f)
-            horizontalInput = 0f;
-
         Vector2 movement = new Vector2(horizontalInput * speed, rb.velocity.y);
         rb.velocity = movement;
 
@@ -64,32 +62,14 @@ public class Movement : MonoBehaviour
         {
             grounded = true;
         }
-        // Battle Activation 
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            Debug.Log("Collided with an enemy");
-            EnemyPatrol enemyPatrol = collision.gameObject.GetComponent<EnemyPatrol>();           
-            // Access the EnemyData from the EnemyPatrol component
-            EnemyData enemyData = enemyPatrol.enemyData;
-            
-            // Save player and enemy data to PlayerPrefs for access in the battle scene
-            PlayerPrefs.SetString("PlayerData", JsonUtility.ToJson(playerData));
-            PlayerPrefs.SetString("EnemyData", JsonUtility.ToJson(enemyData));
-        
-             // Load the battle scene
-            SceneManager.LoadScene("BattleScene");
-            // Start battle with the retrieved player and enemy data
-            //SceneManager.LoadScene("BattleScene");
+        if ( collision.gameObject.CompareTag("DeadZone")){
+            SceneManager.LoadScene("MainMenu");
         }
+        
     }
 
     public bool IsGrounded()
     {
         return grounded;
-    }
-
-    public GameObject GetCollidedEnemy()
-    {
-        return collidedEnemy;
     }
 }

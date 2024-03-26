@@ -8,6 +8,8 @@ public class EnemyData : ScriptableObject
     [SerializeField]
     public string EnemyName;
     public int level;
+
+    public int exp;
     public int currentHP;
     public int maxHP;
     public int basicHitDamage;
