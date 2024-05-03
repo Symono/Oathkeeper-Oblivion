@@ -12267,8 +12267,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: BattleSystem, Assembly-CSharp
+      - m_Target: {fileID: 174426952}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
         m_MethodName: OnHealButton
         m_Mode: 1
         m_Arguments:
@@ -12291,7 +12291,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1228755206}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -12303,7 +12303,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1602913765}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -15619,6 +15619,75 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &1715642643
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1654354097901265956, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
+      propertyPath: enemyData
+      value: 
+      objectReference: {fileID: 11400000, guid: 219d3c0eaa856e84b9cf8ba5b1c9b5ea, type: 2}
+    - target: {fileID: 1654354097901265956, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
+      propertyPath: battleManager
+      value: 
+      objectReference: {fileID: 174426952}
+    - target: {fileID: 1654354097901265956, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 968672523}
+    - target: {fileID: 4405877503900447697, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 32.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405877503900447697, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405877503900447697, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405877503900447697, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405877503900447697, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405877503900447697, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405877503900447697, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405877503900447697, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405877503900447697, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405877503900447697, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8243653008958972307, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
+      propertyPath: m_Name
+      value: LargeBodyEnemy2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
 --- !u!1 &1735049446
 GameObject:
   m_ObjectHideFlags: 0
@@ -17309,6 +17378,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1208887279350354637, guid: cd83591100b41da43925a1bcec849e00, type: 3}
+      propertyPath: enemyData
+      value: 
+      objectReference: {fileID: 11400000, guid: d3223c10bd2d41a41ad55247de97ae22, type: 2}
+    - target: {fileID: 1208887279350354637, guid: cd83591100b41da43925a1bcec849e00, type: 3}
       propertyPath: enemyPatrol
       value: 
       objectReference: {fileID: 1267404325}
@@ -17505,3 +17578,4 @@ SceneRoots:
   - {fileID: 428973448}
   - {fileID: 1468839675}
   - {fileID: 2055346614}
+  - {fileID: 1715642643}

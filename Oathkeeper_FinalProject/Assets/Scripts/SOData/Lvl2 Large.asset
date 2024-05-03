@@ -9,16 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1b1d9914d8b5074fbacb43e07cb3c22, type: 3}
-  m_Name: Player
+  m_Script: {fileID: 11500000, guid: 8bf21bf11114ad346858cc3b88c8df9e, type: 3}
+  m_Name: Lvl2 Large
   m_EditorClassIdentifier: 
-  playerName: Sora
-  level: 1
-  experiencePoints: 0
-  currentHP: 70
-  maxHP: 70
-  currentMana: 60
-  maxMana: 60
+  EnemyName: Large Body
+  level: 2
+  exp: 100
+  currentHP: 25
+  maxHP: 25
   basicHitDamage: 5
-  healAmount: 5
-  character: {fileID: 2701346054365551517, guid: 712af2275f5a13c408f4de087e893c34, type: 3}
+  healAmount: 0
+  character: {fileID: 8243653008958972307, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}

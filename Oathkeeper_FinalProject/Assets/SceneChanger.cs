@@ -8,5 +8,9 @@ public class SceneChanger : MonoBehaviour
  public void LoadGame()
     {
         SceneManager.LoadScene("Start Game");
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
     }   
 }

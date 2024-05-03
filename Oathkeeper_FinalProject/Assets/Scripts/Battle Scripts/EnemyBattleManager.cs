@@ -8,14 +8,14 @@ public class EnemyBattleManager : MonoBehaviour
     public EnemyPatrol enemyPatrol;
     public Transform playerTransform;
    
+    public EnemyData enemyData;
 
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            enemyPatrol.PauseMovement();
-            
-           
+            enemyPatrol.PauseMovement();           
         }
     }
     void FacePlayer()
@@ -25,10 +25,11 @@ public class EnemyBattleManager : MonoBehaviour
 
     void Update()
     {
-        if (battleManager.state == BattleState.WON)
+        if (enemyData.currentHP <= 0)
         {
             Destroy(this.gameObject);
         }
     }
+    
 }
 

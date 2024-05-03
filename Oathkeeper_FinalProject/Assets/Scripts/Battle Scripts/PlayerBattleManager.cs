@@ -14,16 +14,21 @@ public class PlayerBattleManager : MonoBehaviour
 
     public Animator playerAnimator;
 
+    private GameObject currentEnemy;
+
+
      private void OnCollisionEnter2D(Collision2D collision)
     {
         // Battle Activation 
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Debug.Log("Collided with an enemy");
+            //set current enemy
+            currentEnemy = collision.gameObject;
             //Set Active Battle Canvas
             BattleCanvas.SetActive(true);
             //Start Script BattleManager
-            battleManager.StartBattle();
+            battleManager.StartBattle(currentEnemy);
             //Set Player position
             Vector2 newPosition = (Vector2)playerTransform.position * (-1 * distanceToMoveBack); // Calculate new position
             playerTransform.position = newPosition; // Move the player to the new position

@@ -25,16 +25,26 @@ public class BattleManager : MonoBehaviour
     public TextMeshProUGUI ExperienceText;
     public TextMeshProUGUI LevelText;
 
-    
-    
-    public void StartBattle()
+    private GameObject currentEnemy;
+
+    public void StartBattle(GameObject enemyGameObject)
     {
+       currentEnemy = enemyGameObject;
+        EnemyBattleManager enemyManager = enemyGameObject.GetComponent<EnemyBattleManager>();      
+         if (enemyManager != null)
+        {
+            enemy = enemyManager.enemyData; // Get EnemyData reference from EnemyBattleManager
+            StartCoroutine(SetupBattle());
+        }
+        else
+        {
+            Debug.LogError("EnemyBattleManager component not found on the enemy GameObject.");
+        }
         StartCoroutine(SetupBattle());
     }
 
     IEnumerator SetupBattle()
     {
-            
         dialogueText.text = "A Battle has started with " + enemy.EnemyName;
 
         playerHUD.SetHUD(player);
@@ -86,8 +96,6 @@ public class BattleManager : MonoBehaviour
 
             LevelText.text = "Your current Level is " + player.level + " your current exp is " + player.experiencePoints;
                         
-
-
         }
         else
         {
@@ -167,5 +175,6 @@ public class BattleManager : MonoBehaviour
             PlayerTurn();
         }
     }
+
 }
 
