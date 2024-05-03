@@ -15,13 +15,26 @@ public class EnemyBattleManager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            FacePlayer();
             enemyPatrol.PauseMovement();           
         }
     }
     void FacePlayer()
     {
-        //need to do this
+        // Calculate direction to the player
+        Vector3 direction = playerTransform.position - transform.position;
+        
+        // Flip enemy sprite based on the direction
+        if (direction.x > 0) // Player is to the right
+        {
+            transform.localScale = new Vector3(3, 3, 3); // Flip enemy to face right
+        }
+        else // Player is to the left
+        {
+            transform.localScale = new Vector3(-3, 3, 3); // Keep enemy facing left
+        }
     }
+    
 
     void Update()
     {
