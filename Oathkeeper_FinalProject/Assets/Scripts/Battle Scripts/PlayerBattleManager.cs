@@ -41,13 +41,36 @@ public class PlayerBattleManager : MonoBehaviour
         
         // Move the player to the new position
         playerTransform.position = newPosition;
-
+        
+        //have player face the enemy
+        FaceEnemy();
+        
         // Set animator bool for running to false
         playerAnimator.SetBool("Run", false);
-
+        // Check if the player is currently in the jump animation
+        if (playerAnimator.GetBool("Jump"))
+        {
+            // Set jump animator parameter to false to transition to idle animation
+            playerAnimator.SetBool("Jump", false);
+        }
         // Deactivate Character Movement 
         characterMovement.enabled = false;
     }
 }
+ void FaceEnemy()
+    {
+        // Calculate direction to the enemy
+        Vector3 direction = currentEnemy.transform.position - transform.position;
+        
+        // Flip player sprite based on the direction
+        if (direction.x > 0) // enemy is to the right
+        {
+            transform.localScale = new Vector3(1, 1, 1); // Flip player to face right
+        }
+        else // Player is to the left
+        {
+            transform.localScale = new Vector3(-1, 1, 1); // Keep player facing left
+        }
+    }
 }
 
