@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   playerName: Sora
-  level: 1
-  experiencePoints: 0
-  currentHP: 70
-  maxHP: 70
+  level: 2
+  experiencePoints: 50
+  currentHP: 80
+  maxHP: 80
   currentMana: 60
-  maxMana: 60
+  maxMana: 65
   basicHitDamage: 5
   healAmount: 5
   character: {fileID: 2701346054365551517, guid: 712af2275f5a13c408f4de087e893c34, type: 3}
