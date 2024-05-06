@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class SaveSlotsMenu : Menu
 {
     [Header("Menu Navigation")]
     [SerializeField] private MainMenu mainMenu;
+
+    [Header("New Navigation")]
+    [SerializeField] private Canvas newDialogue;
+    [SerializeField] private TMP_InputField playerNameInput;
+
 
     [Header("Menu Buttons")]
     [SerializeField] private Button backButton;
@@ -15,6 +21,7 @@ public class SaveSlotsMenu : Menu
     private SaveSlot[] saveSlots;
 
     private bool isLoadingGame = false;
+    private bool isNewGame = false;
 
     private void Awake() 
     {
@@ -31,12 +38,12 @@ public class SaveSlotsMenu : Menu
 
         if (!isLoadingGame) 
         {
-            // create a new game - which will initialize our data to a clean slate
-            DataPersistenceManager.instance.NewGame();
-        }
+            NewGameClicked();
 
+        }else{
         // load the scene - which will in turn save the game because of OnSceneUnloaded() in the DataPersistenceManager
         SceneManager.LoadSceneAsync("Start Game");
+        }
     }
 
     public void OnBackClicked() 
@@ -89,6 +96,7 @@ public class SaveSlotsMenu : Menu
     public void DeactivateMenu() 
     {
         this.gameObject.SetActive(false);
+        mainMenu.ActivateMenu();
     }
 
     private void DisableMenuButtons() 
@@ -98,5 +106,35 @@ public class SaveSlotsMenu : Menu
             saveSlot.SetInteractable(false);
         }
         backButton.interactable = false;
+    }
+    public void NewGameClicked(){
+        this.DeactivateMenu();
+        mainMenu.gameObject.SetActive(false);
+        newDialogue.gameObject.SetActive(true);
+        isNewGame = true;
+    }
+    public void NewGameBack(){
+        newDialogue.gameObject.SetActive(false);
+        mainMenu.gameObject.SetActive(true);
+
+    }
+    public void OnConfirmNewGameClicked()
+    {
+        string playerName = playerNameInput.text;
+        // Check if the player name is not empty
+        if (!string.IsNullOrEmpty(playerName))
+        {
+            // Game already started change player name
+            // create a new game - which will initialize our data to a clean slate
+            DataPersistenceManager.instance.NewGame(playerName);
+            
+            // Load the scene
+            SceneManager.LoadSceneAsync("Start Game");
+        }
+        else
+        {
+            // Display a message to the player indicating that the player name cannot be empty
+            Debug.Log("Player name cannot be empty.");
+        }
     }
 }

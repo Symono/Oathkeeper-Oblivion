@@ -81,9 +81,9 @@ public class DataPersistenceManager : MonoBehaviour
         LoadGame();
     }
 
-    public void NewGame() 
+    public void NewGame(string name) 
 {
-    gameData = new GameData();
+    gameData = new GameData(name);
 }
 public void DeleteProfileData(string profileId) 
     {
@@ -109,7 +109,7 @@ public void DeleteProfileData(string profileId)
         // start a new game if the data is null and we're configured to initialize data for debugging purposes
         if (this.gameData == null && initializeDataIfNull) 
         {
-            NewGame();
+            NewGame(name);
         }
 
         // if no data can be loaded, don't continue

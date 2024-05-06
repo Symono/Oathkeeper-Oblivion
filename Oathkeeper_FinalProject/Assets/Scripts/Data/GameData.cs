@@ -13,11 +13,12 @@ public class GameData
 
     // The values defined in this constructor will be the default values
     // the game starts with when there's no data to load
-    public GameData() 
+    public GameData(string name) 
     {
         this.level = 0;
         playerPosition = Vector3.zero;
         playerAttributesData = new PlayerAttributes(); 
+        playerAttributesData.playerName = name;
     }
 
     // Method to get the character name
