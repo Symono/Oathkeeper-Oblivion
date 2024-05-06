@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public class Movement : MonoBehaviour, IDataPersistence
 {
     [SerializeField] float speed = 10f;
     [SerializeField] float jumpForce = 10f;
@@ -74,5 +74,30 @@ public class Movement : MonoBehaviour
     public bool IsGrounded()
     {
         return grounded;
+    }
+    public void LoadData(GameData data){
+        this.transform.position = data.playerPosition;
+        playerData.playerName = data.playerAttributesData.playerName;
+        playerData.level = data.playerAttributesData.level;
+        playerData.experiencePoints = data.playerAttributesData.experiencePoints;  
+        playerData.currentHP = data.playerAttributesData.currentHP;
+        playerData.maxHP = data.playerAttributesData.maxHP;
+        playerData.currentMana = data.playerAttributesData.currentMana;
+        playerData.maxMana = data.playerAttributesData.maxMana;
+        playerData.basicHitDamage = data.playerAttributesData.basicHitDamage;
+        playerData.healAmount = data.playerAttributesData.healAmount;
+        
+    }
+    public void SaveData(GameData data){
+        data.playerPosition = this.transform.position;
+        data.playerAttributesData.playerName =playerData.playerName;
+        data.playerAttributesData.level = playerData.level;
+        data.playerAttributesData.experiencePoints  =   playerData.experiencePoints;
+        data.playerAttributesData.currentHP =   playerData.currentHP;
+        data.playerAttributesData.maxHP =   playerData.maxHP;
+        data.playerAttributesData.currentMana = playerData.currentMana;
+        data.playerAttributesData.maxMana = playerData.maxMana;
+        data.playerAttributesData.basicHitDamage =  playerData.basicHitDamage;
+        data.playerAttributesData.healAmount =  playerData.healAmount;
     }
 }

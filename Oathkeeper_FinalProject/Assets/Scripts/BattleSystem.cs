@@ -26,13 +26,11 @@ public class BattleSystem : MonoBehaviour
 
     private PlayerData playerData;
     private EnemyData enemyData;
-    public gameManager gameManager;
 
 
 
     void Start()
 {
-    gameManager = FindObjectOfType<gameManager>();
     
     StartBattle(playerData, enemyData);
 }
@@ -99,7 +97,6 @@ public class BattleSystem : MonoBehaviour
         if (state == BattleState.WON)
         {
             dialogueText.text = "You WIN";
-            gameManager.EndBattleAndTransitionScene();
 
         }
         else

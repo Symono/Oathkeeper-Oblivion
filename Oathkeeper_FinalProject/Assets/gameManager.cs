@@ -1,27 +1,73 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using System.IO;
 
-public class gameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    public GameObject enemyObject;
-    public GameObject player;
+    public static GameManager instance;
 
-    private void Start()
+    private PlayerData playerData;
+    private int currentStage;
+
+    private string savePath;
+
+    private void Awake()
     {
-        // Ensure this GameObject persists between scenes
-        DontDestroyOnLoad(gameObject);
-        DontDestroyOnLoad(player);
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+
+            savePath = Application.persistentDataPath + "/save.json";
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    public void EndBattleAndTransitionScene()
+    public void SaveGame(PlayerData player, int stage)
     {
-        
-         SceneManager.LoadScene("Start Game"); 
-        // Destroy enemy object if it exists
-        if (enemyObject != null)
-        {
-            Destroy(enemyObject);
-        }
+        playerData = player;
+        currentStage = stage;
 
+        string json = JsonUtility.ToJson(new SaveData(playerData, currentStage));
+        File.WriteAllText(savePath, json);
+    }
+
+    public PlayerData LoadGame()
+    {
+        if (File.Exists(savePath))
+        {
+            string json = File.ReadAllText(savePath);
+            SaveData saveData = JsonUtility.FromJson<SaveData>(json);
+
+            playerData = saveData.player;
+            currentStage = saveData.stage;
+
+            Debug.Log("Player Name: " + playerData.playerName);
+            Debug.Log("Player Level: " + playerData.level);
+            Debug.Log("Current Stage: " + currentStage);
+
+            return playerData;
+        }
+        else
+        {
+            Debug.Log("Save file not found.");
+            return null;
+        }
+    }
+
+    // Data structure to hold player data and stage
+    [System.Serializable]
+    private class SaveData
+    {
+        public PlayerData player;
+        public int stage;
+
+        public SaveData(PlayerData player, int stage)
+        {
+            this.player = player;
+            this.stage = stage;
+        }
     }
 }

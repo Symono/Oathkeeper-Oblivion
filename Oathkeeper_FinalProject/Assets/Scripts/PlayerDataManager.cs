@@ -29,4 +29,5 @@ public class PlayerDataManager : MonoBehaviour
             playerData = ScriptableObject.CreateInstance<PlayerData>();
         }
     }
+    
 }

@@ -67,6 +67,19 @@ public class PlayerData : ScriptableObject
     }
     
 }
+// Method to initialize default values
+    public void InitializeDefaultValues()
+    {
+        playerName = "DefaultName";
+        level = 1;
+        experiencePoints = 0;
+        currentHP = 100;
+        maxHP = 100;
+        currentMana = 50;
+        maxMana = 50;
+        basicHitDamage = 10;
+        healAmount = 20;
+    }
 
 
 }
