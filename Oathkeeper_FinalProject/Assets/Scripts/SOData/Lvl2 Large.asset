@@ -15,8 +15,9 @@ MonoBehaviour:
   EnemyName: Large Body
   level: 2
   exp: 100
-  currentHP: 25
+  currentHP: -5
   maxHP: 25
   basicHitDamage: 5
   healAmount: 0
+  id: 3560f483-f2d9-4125-b0b2-222b70ff8bd4
   character: {fileID: 8243653008958972307, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}

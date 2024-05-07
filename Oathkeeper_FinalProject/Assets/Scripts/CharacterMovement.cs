@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using Unity.VisualScripting;
 
 public class Movement : MonoBehaviour, IDataPersistence
 {
@@ -13,11 +14,17 @@ public class Movement : MonoBehaviour, IDataPersistence
     private bool grounded;    
     public bool canMove;
     public PlayerData playerData;
+    private DataPersistenceManager dataPersistenceManager;
 
+    
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        // Find DataPersistenceManager instance
+        //dataPersistenceManager = FindObjectOfType<DataPersistenceManager>();
+        //DontDestroyOnLoad(gameObject);
+
     }
 
     void FixedUpdate()
@@ -63,12 +70,17 @@ public class Movement : MonoBehaviour, IDataPersistence
             grounded = true;
         }
         if ( collision.gameObject.CompareTag("DeadZone")){
-            SceneManager.LoadScene("Main Menu");
-            // implement restart level instead.
+            // take damage
+            playerData.currentHP -= 5; 
+            Debug.Log("You took damage");
         }
         if (collision.gameObject.CompareTag("Finish")){
-            SceneManager.LoadScene("Main Menu");
-            // implement move to next level. must defeat all enemies
+            playerData.sceneIndex += 1;
+            DataPersistenceManager.instance.SaveGame();
+            int sceneIndex = playerData.sceneIndex;
+            //int sceneIndex = DataPersistenceManager.instance.GetIndex();
+            SceneManager.LoadSceneAsync(sceneIndex);
+            
         }
         
     }

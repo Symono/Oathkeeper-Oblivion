@@ -65,6 +65,11 @@ public class DataPersistenceManager : MonoBehaviour
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode) 
     {
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
+        Movement movementScript = FindObjectOfType<Movement>();
+    if (movementScript != null && movementScript.gameObject.activeInHierarchy)
+    {
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
+    }
         LoadGame();
     }
 
@@ -169,6 +174,16 @@ public void DeleteProfileData(string profileId)
     }
     private void OnApplicationQuit() 
     {
+        SaveGame();
+    }
+    public void SaveGameBeforeSceneUnload()
+    {
+        if (disableDataPersistence) 
+        {
+            return;
+        }
+
+        // Save the game data before the scene is unloaded
         SaveGame();
     }
 
