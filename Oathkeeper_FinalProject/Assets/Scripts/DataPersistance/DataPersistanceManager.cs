@@ -53,29 +53,17 @@ public class DataPersistenceManager : MonoBehaviour
     private void OnEnable() 
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
 
     private void OnDisable() 
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode) 
     {
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
-        Movement movementScript = FindObjectOfType<Movement>();
-    if (movementScript != null && movementScript.gameObject.activeInHierarchy)
-    {
-        SceneManager.sceneUnloaded += OnSceneUnloaded;
-    }
         LoadGame();
-    }
-
-    public void OnSceneUnloaded(Scene scene)
-    {
-        SaveGame();
     }
 
     public void ChangeSelectedProfileId(string newProfileId) 
@@ -88,7 +76,7 @@ public class DataPersistenceManager : MonoBehaviour
 
     public void NewGame(string name, int sceneIndex) 
 {
-    gameData = new GameData(name,sceneIndex);
+    this.gameData = new GameData(name,sceneIndex);
 
 }
     public int GetIndex(){
@@ -176,16 +164,7 @@ public void DeleteProfileData(string profileId)
     {
         SaveGame();
     }
-    public void SaveGameBeforeSceneUnload()
-    {
-        if (disableDataPersistence) 
-        {
-            return;
-        }
 
-        // Save the game data before the scene is unloaded
-        SaveGame();
-    }
 
     private List<IDataPersistence> FindAllDataPersistenceObjects() 
     {

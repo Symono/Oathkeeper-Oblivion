@@ -14,7 +14,8 @@ public class Movement : MonoBehaviour, IDataPersistence
     private bool grounded;    
     public bool canMove;
     public PlayerData playerData;
-    private DataPersistenceManager dataPersistenceManager;
+
+    public Vector2 globalPosition;
 
     
     void Start()
@@ -23,7 +24,9 @@ public class Movement : MonoBehaviour, IDataPersistence
         anim = GetComponent<Animator>();
         // Find DataPersistenceManager instance
         //dataPersistenceManager = FindObjectOfType<DataPersistenceManager>();
-        //DontDestroyOnLoad(gameObject);
+         // Store initial position
+        //playerData.playerPosition = Vector2.zero;       
+
 
     }
 
@@ -38,12 +41,19 @@ public class Movement : MonoBehaviour, IDataPersistence
                 Jump();
             }
         }
+        if (Input.GetKeyDown(KeyCode.Escape)){
+            DataPersistenceManager.instance.SaveGame();
+            int sceneIndex = DataPersistenceManager.instance.GetIndex();
+            SceneManager.LoadSceneAsync(0);
+        }
     }
 
     public void MovePlayer(float horizontalInput)
     {
         Vector2 movement = new Vector2(horizontalInput * speed, rb.velocity.y);
         rb.velocity = movement;
+        // Update player position
+        //playerData.playerPosition = this.transform.position;
 
         // Flip player left and right
         if (horizontalInput > 0.01f)
@@ -76,11 +86,12 @@ public class Movement : MonoBehaviour, IDataPersistence
         }
         if (collision.gameObject.CompareTag("Finish")){
             playerData.sceneIndex += 1;
+
+            //this line is causing the error
             DataPersistenceManager.instance.SaveGame();
-            int sceneIndex = playerData.sceneIndex;
-            //int sceneIndex = DataPersistenceManager.instance.GetIndex();
+            int sceneIndex = DataPersistenceManager.instance.GetIndex();
             SceneManager.LoadSceneAsync(sceneIndex);
-            
+            globalPosition = Vector2.zero;
         }
         
     }
@@ -90,6 +101,7 @@ public class Movement : MonoBehaviour, IDataPersistence
         return grounded;
     }
     public void LoadData(GameData data){
+        
         this.transform.position = data.playerPosition;
         playerData.playerName = data.playerAttributesData.playerName;
         playerData.level = data.playerAttributesData.level;
@@ -104,7 +116,17 @@ public class Movement : MonoBehaviour, IDataPersistence
         
     }
     public void SaveData(GameData data){
-        data.playerPosition = this.transform.position;
+         // If the player reaches the finish line, set the position to Vector2.zero
+    if (SceneManager.GetActiveScene().buildIndex != playerData.sceneIndex)
+    {
+        data.playerPosition = Vector2.zero;
+    }
+    else
+    {
+        // Otherwise, save the current player position
+        data.playerPosition = transform.position;
+    }
+        globalPosition = data.playerPosition;
         data.playerAttributesData.playerName =playerData.playerName;
         data.playerAttributesData.level = playerData.level;
         data.playerAttributesData.experiencePoints  =   playerData.experiencePoints;

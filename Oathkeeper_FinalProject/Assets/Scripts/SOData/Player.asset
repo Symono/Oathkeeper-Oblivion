@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1b1d9914d8b5074fbacb43e07cb3c22, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  playerName: sora
+  playerName: serdtfghb
   level: 1
   experiencePoints: 0
-  currentHP: 100
+  currentHP: 95
   maxHP: 100
   currentMana: 50
   maxMana: 50
   basicHitDamage: 10
   healAmount: 20
-  sceneIndex: 1
+  sceneIndex: 2
   character: {fileID: 2701346054365551517, guid: 712af2275f5a13c408f4de087e893c34, type: 3}

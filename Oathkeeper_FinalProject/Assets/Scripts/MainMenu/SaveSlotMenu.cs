@@ -42,6 +42,8 @@ public class SaveSlotsMenu : Menu
             NewGameClicked();
 
         }else{
+        //save gamebefore loading a new scene
+        DataPersistenceManager.instance.SaveGame();        
         // load the scene - which will in turn save the game because of OnSceneUnloaded() in the DataPersistenceManager
         int sceneIndex = DataPersistenceManager.instance.GetIndex();
         //Debug.Log("" + sceneIndex);
@@ -130,8 +132,7 @@ public class SaveSlotsMenu : Menu
             // Game already started change player name
             // create a new game - which will initialize our data to a clean slate
             DataPersistenceManager.instance.NewGame(playerName, sceneIndex);
-            
-            // Load the scene
+            DataPersistenceManager.instance.SaveGame();
             SceneManager.LoadSceneAsync(sceneIndex);
         }
         else

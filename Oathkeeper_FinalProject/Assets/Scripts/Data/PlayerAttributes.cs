@@ -14,6 +14,7 @@ public class PlayerAttributes
     public int basicHitDamage;
     public int healAmount;
     public int sceneIndex;
+    public Vector2 playerPosition;
     public PlayerAttributes()
     {
         this.playerName = "DefaultName";
@@ -26,5 +27,6 @@ public class PlayerAttributes
         this.basicHitDamage = 10;
         this.healAmount = 20;
         this.sceneIndex = 1;
+        this.playerPosition = Vector2.zero;
     }
 }

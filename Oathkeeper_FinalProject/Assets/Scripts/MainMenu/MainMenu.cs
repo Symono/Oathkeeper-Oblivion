@@ -38,6 +38,8 @@ public class MainMenu : Menu
     public void OnContinueGameClicked() 
     {
         DisableMenuButtons();
+        
+        DataPersistenceManager.instance.SaveGame();
         // load the next scene - which will in turn load the game because of 
         // OnSceneLoaded() in the DataPersistenceManager
         int sceneIndex = DataPersistenceManager.instance.GetIndex();

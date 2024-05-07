@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameData
 {
     public long lastUpdated;
-    public Vector3 playerPosition;
+    public Vector2 playerPosition;
     public PlayerAttributes playerAttributesData;
     public enemyAttributes enemyAttributesData;
 
@@ -18,10 +18,12 @@ public class GameData
     // the game starts with when there's no data to load
     public GameData(string name,int sceneIndex) 
     {
-        playerPosition = Vector2.zero;
+        //playerPosition = Vector2.zero;
         playerAttributesData = new PlayerAttributes(); 
         playerAttributesData.playerName = name;
         playerAttributesData.sceneIndex = sceneIndex;
+        //playerAttributesData.playerPosition = playerPosition;
+        playerPosition = Vector2.zero;
         enemysDestroyed = new SerializableDictionary<string, int>();
         enemyAttributesData = new enemyAttributes();
     }

@@ -16,6 +16,7 @@ public class PlayerData : ScriptableObject
     public int basicHitDamage;
     public int healAmount;
     public int sceneIndex;
+    public Vector2 playerPosition;
     public GameObject character;
 
     // Default constructor
@@ -82,6 +83,7 @@ public class PlayerData : ScriptableObject
         basicHitDamage = 10;
         healAmount = 20;
         sceneIndex = 1;
+        playerPosition = Vector2.zero;
     }
 
 
