@@ -12,7 +12,7 @@ public class GameData
     public enemyAttributes enemyAttributesData;
 
 
-    public SerializableDictionary<string,int> enemysDestroyed;
+    public SerializableDictionary<string,bool> enemysBattled;
 
     // The values defined in this constructor will be the default values
     // the game starts with when there's no data to load
@@ -24,7 +24,7 @@ public class GameData
         playerAttributesData.sceneIndex = sceneIndex;
         //playerAttributesData.playerPosition = playerPosition;
         playerPosition = Vector2.zero;
-        enemysDestroyed = new SerializableDictionary<string, int>();
+        enemysBattled = new SerializableDictionary<string, bool>();
         enemyAttributesData = new enemyAttributes();
     }
 

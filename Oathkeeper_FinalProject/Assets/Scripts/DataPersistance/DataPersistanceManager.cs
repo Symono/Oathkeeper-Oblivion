@@ -183,4 +183,8 @@ public void DeleteProfileData(string profileId)
     {
         return dataHandler.LoadAllProfiles();
     }
+    public GameData GetGameData()
+    {
+        return gameData;
+    }
 }

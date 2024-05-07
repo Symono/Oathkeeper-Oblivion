@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 [System.Serializable]
 
@@ -21,7 +22,7 @@ public class enemyAttributes
         this.exp = 50;
         this.currentHP = 25;
         this.maxHP = 25;
-        this.id = System.Guid.NewGuid().ToString(); 
+        this.id = "nothing"; 
     }
 }
 
