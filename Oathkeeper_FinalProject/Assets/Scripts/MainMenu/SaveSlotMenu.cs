@@ -14,6 +14,8 @@ public class SaveSlotsMenu : Menu
     [SerializeField] private Canvas newDialogue;
     [SerializeField] private TMP_InputField playerNameInput;
 
+    [SerializeField] private int sceneIndex;
+
 
     [Header("Menu Buttons")]
     [SerializeField] private Button backButton;
@@ -21,7 +23,6 @@ public class SaveSlotsMenu : Menu
     private SaveSlot[] saveSlots;
 
     private bool isLoadingGame = false;
-    private bool isNewGame = false;
 
     private void Awake() 
     {
@@ -42,7 +43,9 @@ public class SaveSlotsMenu : Menu
 
         }else{
         // load the scene - which will in turn save the game because of OnSceneUnloaded() in the DataPersistenceManager
-        SceneManager.LoadSceneAsync("Start Game");
+        int sceneIndex = DataPersistenceManager.instance.GetIndex();
+        //Debug.Log("" + sceneIndex);
+        SceneManager.LoadSceneAsync(sceneIndex);
         }
     }
 
@@ -111,7 +114,6 @@ public class SaveSlotsMenu : Menu
         this.DeactivateMenu();
         mainMenu.gameObject.SetActive(false);
         newDialogue.gameObject.SetActive(true);
-        isNewGame = true;
     }
     public void NewGameBack(){
         newDialogue.gameObject.SetActive(false);
@@ -121,15 +123,16 @@ public class SaveSlotsMenu : Menu
     public void OnConfirmNewGameClicked()
     {
         string playerName = playerNameInput.text;
+        int sceneIndex = 1;
         // Check if the player name is not empty
         if (!string.IsNullOrEmpty(playerName))
         {
             // Game already started change player name
             // create a new game - which will initialize our data to a clean slate
-            DataPersistenceManager.instance.NewGame(playerName);
+            DataPersistenceManager.instance.NewGame(playerName, sceneIndex);
             
             // Load the scene
-            SceneManager.LoadSceneAsync("Start Game");
+            SceneManager.LoadSceneAsync(sceneIndex);
         }
         else
         {

@@ -40,7 +40,9 @@ public class MainMenu : Menu
         DisableMenuButtons();
         // load the next scene - which will in turn load the game because of 
         // OnSceneLoaded() in the DataPersistenceManager
-        SceneManager.LoadSceneAsync("Start Game");
+        int sceneIndex = DataPersistenceManager.instance.GetIndex();
+        SceneManager.LoadSceneAsync(sceneIndex);
+        //SceneManager.LoadSceneAsync("Start Game");
     }
 
     private void DisableMenuButtons() 

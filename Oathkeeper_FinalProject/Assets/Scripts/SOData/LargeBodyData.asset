@@ -19,4 +19,5 @@ MonoBehaviour:
   maxHP: 25
   basicHitDamage: 5
   healAmount: 5
+  id: 737be61d-c8db-4e03-9860-3a0caf49b793
   character: {fileID: 9034150966606301717, guid: cd83591100b41da43925a1bcec849e00, type: 3}

@@ -81,10 +81,14 @@ public class DataPersistenceManager : MonoBehaviour
         LoadGame();
     }
 
-    public void NewGame(string name) 
+    public void NewGame(string name, int sceneIndex) 
 {
-    gameData = new GameData(name);
+    gameData = new GameData(name,sceneIndex);
+
 }
+    public int GetIndex(){
+        return this.gameData.GetSceneIndex();
+    }
 public void DeleteProfileData(string profileId) 
     {
         // delete the data for this profile id
@@ -109,7 +113,8 @@ public void DeleteProfileData(string profileId)
         // start a new game if the data is null and we're configured to initialize data for debugging purposes
         if (this.gameData == null && initializeDataIfNull) 
         {
-            NewGame(name);
+            NewGame(name,1);
+
         }
 
         // if no data can be loaded, don't continue
@@ -118,7 +123,7 @@ public void DeleteProfileData(string profileId)
             Debug.Log("No data was found. A New Game needs to be started before data can be loaded.");
             return;
         }
-
+        
         // push the loaded data to all other scripts that need it
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects) 
         {

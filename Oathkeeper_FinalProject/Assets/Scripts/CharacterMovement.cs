@@ -64,9 +64,11 @@ public class Movement : MonoBehaviour, IDataPersistence
         }
         if ( collision.gameObject.CompareTag("DeadZone")){
             SceneManager.LoadScene("Main Menu");
+            // implement restart level instead.
         }
         if (collision.gameObject.CompareTag("Finish")){
             SceneManager.LoadScene("Main Menu");
+            // implement move to next level. must defeat all enemies
         }
         
     }
@@ -86,6 +88,7 @@ public class Movement : MonoBehaviour, IDataPersistence
         playerData.maxMana = data.playerAttributesData.maxMana;
         playerData.basicHitDamage = data.playerAttributesData.basicHitDamage;
         playerData.healAmount = data.playerAttributesData.healAmount;
+        playerData.sceneIndex = data.playerAttributesData.sceneIndex;
         
     }
     public void SaveData(GameData data){
@@ -99,5 +102,6 @@ public class Movement : MonoBehaviour, IDataPersistence
         data.playerAttributesData.maxMana = playerData.maxMana;
         data.playerAttributesData.basicHitDamage =  playerData.basicHitDamage;
         data.playerAttributesData.healAmount =  playerData.healAmount;
+        data.playerAttributesData.sceneIndex = playerData.sceneIndex;
     }
 }

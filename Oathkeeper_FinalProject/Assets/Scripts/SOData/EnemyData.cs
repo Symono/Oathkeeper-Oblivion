@@ -15,6 +15,8 @@ public class EnemyData : ScriptableObject
     public int basicHitDamage;
     public int healAmount;
 
+    public string id;
+
     public GameObject character;
     
     

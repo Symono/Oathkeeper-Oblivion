@@ -13,6 +13,7 @@ public class PlayerAttributes
     public int maxMana;
     public int basicHitDamage;
     public int healAmount;
+    public int sceneIndex;
     public PlayerAttributes()
     {
         this.playerName = "DefaultName";
@@ -24,5 +25,6 @@ public class PlayerAttributes
         this.maxMana = 50;
         this.basicHitDamage = 10;
         this.healAmount = 20;
+        this.sceneIndex = 1;
     }
 }

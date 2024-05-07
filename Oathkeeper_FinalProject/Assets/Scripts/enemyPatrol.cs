@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyPatrol : MonoBehaviour
 {
+   
     private Rigidbody2D rb;
     private Animator anim;
     public float speed;
@@ -14,6 +16,8 @@ public class EnemyPatrol : MonoBehaviour
     private bool Grounded;
 
     public EnemyData enemyData;
+
+
 
 
     void Start()

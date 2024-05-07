@@ -15,6 +15,7 @@ public class PlayerData : ScriptableObject
     public int maxMana;
     public int basicHitDamage;
     public int healAmount;
+    public int sceneIndex;
     public GameObject character;
 
     // Default constructor
@@ -29,6 +30,7 @@ public class PlayerData : ScriptableObject
         maxMana = 50;
         basicHitDamage = 10;
         healAmount = 20;
+        sceneIndex = 1;
     }
 
     public bool TakeDamage(int dmg)
@@ -79,6 +81,7 @@ public class PlayerData : ScriptableObject
         maxMana = 50;
         basicHitDamage = 10;
         healAmount = 20;
+        sceneIndex = 1;
     }
 
 
