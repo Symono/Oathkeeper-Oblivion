@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bf21bf11114ad346858cc3b88c8df9e, type: 3}
-  m_Name: Lvl2 Large
+  m_Name: Winter Lvl3
   m_EditorClassIdentifier: 
-  EnemyName: Large Body
-  level: 2
-  exp: 100
-  currentHP: 25
-  maxHP: 25
-  basicHitDamage: 10
+  EnemyName: Wintered T
+  level: 3
+  exp: 150
+  currentHP: 30
+  maxHP: 30
+  basicHitDamage: 15
   healAmount: 0
-  id: 2b6b08c4-d923-4d4a-9f7c-3d34f7f93c76
-  character: {fileID: 8243653008958972307, guid: 7bc1e5dc59883c54f82f91a0aa90629b, type: 3}
+  id: 
+  character: {fileID: 0}
