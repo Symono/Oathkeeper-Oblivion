@@ -20,6 +20,7 @@ public class EnemyBattleManager : MonoBehaviour, IDataPersistence
 
     private bool enemyfought ;
 
+
     private void Start() {
 
         if (!this.enemyfought){
@@ -63,6 +64,7 @@ public class EnemyBattleManager : MonoBehaviour, IDataPersistence
             enemyHealth = enemyData.currentHP;
             this.gameObject.SetActive(false);
         }
+        
     }
 
  public void LoadData(GameData data){

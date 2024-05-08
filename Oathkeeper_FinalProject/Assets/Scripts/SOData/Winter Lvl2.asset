@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bf21bf11114ad346858cc3b88c8df9e, type: 3}
   m_Name: Winter Lvl2
   m_EditorClassIdentifier: 
-  EnemyName: Wintered Heartless
+  EnemyName: 'Wintered '
   level: 2
   exp: 100
-  currentHP: 25
+  currentHP: -5
   maxHP: 25
   basicHitDamage: 10
   healAmount: 0

@@ -17,16 +17,16 @@ public class Movement : MonoBehaviour, IDataPersistence
 
     public Vector2 globalPosition;
 
+    public GameObject winnerCanvas;
+
+    public AudioSource music;
+
     
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        // Find DataPersistenceManager instance
-        //dataPersistenceManager = FindObjectOfType<DataPersistenceManager>();
-         // Store initial position
-        //playerData.playerPosition = Vector2.zero;       
-
+        //music.Play();   
 
     }
 
@@ -84,17 +84,34 @@ public class Movement : MonoBehaviour, IDataPersistence
             playerData.currentHP -= 5; 
             Debug.Log("You took damage");
         }
-        if (collision.gameObject.CompareTag("Finish")){
+       
+            if (collision.gameObject.CompareTag("Finish"))
+        {
             playerData.sceneIndex += 1;
 
-            //this line is causing the error
             DataPersistenceManager.instance.SaveGame();
             int sceneIndex = DataPersistenceManager.instance.GetIndex();
-            SceneManager.LoadSceneAsync(sceneIndex);
-            globalPosition = Vector2.zero;
+
+
+            if (sceneIndex > 3) // Check if the scene index is 3
+            {
+                // Activate the winner canvas
+                winnerCanvas.SetActive(true);
+            }
+            else
+            {
+                SceneManager.LoadSceneAsync(sceneIndex);
+                globalPosition = Vector2.zero;
+            }
+        }
+            if(collision.gameObject.CompareTag("End"))
+            {
+                winnerCanvas.SetActive(true);
+            }
+        
         }
         
-    }
+    
 
     public bool IsGrounded()
     {
@@ -137,5 +154,9 @@ public class Movement : MonoBehaviour, IDataPersistence
         data.playerAttributesData.basicHitDamage =  playerData.basicHitDamage;
         data.playerAttributesData.healAmount =  playerData.healAmount;
         data.playerAttributesData.sceneIndex = playerData.sceneIndex;
+    }
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene(0); // Load the main menu scene
     }
 }

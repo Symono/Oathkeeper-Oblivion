@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public class BattleManager : MonoBehaviour
 {
@@ -22,13 +23,23 @@ public class BattleManager : MonoBehaviour
     public GameObject BattleCanvas;
 
     public GameObject winCanvas;
-    public TextMeshProUGUI ExperienceText;
-    public TextMeshProUGUI LevelText;
+
+    public GameObject loseCanvas;
+    public TextMeshProUGUI WinExperienceText;
+    public TextMeshProUGUI WinLevelText;
+    public TextMeshProUGUI LExperienceText;
+    public TextMeshProUGUI LLevelText;
 
     private GameObject currentEnemy;
 
+    public AudioSource battleMusic;
+
+    public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
+
+
     public void StartBattle(GameObject enemyGameObject)
     {
+        battleMusic.Play();
        currentEnemy = enemyGameObject;
         EnemyBattleManager enemyManager = enemyGameObject.GetComponent<EnemyBattleManager>();      
          if (enemyManager != null)
@@ -80,6 +91,7 @@ public class BattleManager : MonoBehaviour
     
     void EndBattle()
     {
+        battleMusic.Stop();
         if (state == BattleState.WON)
         {
             dialogueText.text = "You WIN";
@@ -92,14 +104,29 @@ public class BattleManager : MonoBehaviour
 
             player.GainXP(enemy.exp);
 
-            ExperienceText.text = "You have gained " + enemy.exp +" experience points! ";
+            WinExperienceText.text = "You have gained " + enemy.exp +" experience points! ";
 
-            LevelText.text = "Your current Level is " + player.level + " your current exp is " + player.experiencePoints;
+            WinLevelText.text = "Your current Level is " + player.level + " your current exp is " + player.experiencePoints;
                         
         }
         else
         {
             dialogueText.text = "You LOSE";
+
+            BattleCanvas.SetActive(false);
+
+            loseCanvas.SetActive(true);
+
+            characterMovement.enabled = true;
+
+            player.LoseXP(enemy.exp);
+
+            LExperienceText.text = "You have lost " + enemy.exp +" experience points! ";
+
+            LLevelText.text = "Your current Level is " + player.level + " your current exp is " + player.experiencePoints;
+
+            currentEnemy.SetActive(false);
+            player.currentHP = 80;
             
         }
     }

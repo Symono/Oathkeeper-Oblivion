@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bf21bf11114ad346858cc3b88c8df9e, type: 3}
   m_Name: Winter Lvl3
   m_EditorClassIdentifier: 
-  EnemyName: Wintered T
+  EnemyName: Wintered 2
   level: 3
   exp: 150
   currentHP: 30

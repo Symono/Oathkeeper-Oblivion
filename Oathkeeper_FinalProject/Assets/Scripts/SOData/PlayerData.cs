@@ -68,6 +68,13 @@ public class PlayerData : ScriptableObject
 
         experiencePoints -= levelsGained * levelThreshold;
     }
+
+    
+}
+public void LoseXP(int pointsLost)
+{
+    experiencePoints -= pointsLost;
+    maxHP -= 5;  
     
 }
 // Method to initialize default values
